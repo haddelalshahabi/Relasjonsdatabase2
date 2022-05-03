@@ -6,16 +6,19 @@ $(function(){  // kjøres når dokumentet er ferdig lastet
 function hentAlleBiler() {
     $.get( "/hentBiler", function( biler ) {
         formaterBiler(biler);
-    });
+    })
+        .fail(function(jqXHR) {
+            const json = $.parseJSON(jqXHR.responseText);
+            $("#feil").html(json.message);
+        });
 }
 
 function formaterBiler(biler){
     let ut = "<select id='valgtMerke' onchange='finnTyper()'>";
-    let i = 0;
     let forrigeMerke = "";
     ut+="<option>Velg merke</option>";
     for (const bil of biler){
-        if(bil.merke != forrigeMerke){
+        if(bil.merke !== forrigeMerke){
             ut+="<option>"+bil.merke+"</option>";
         }
         forrigeMerke = bil.merke;
@@ -28,7 +31,11 @@ function finnTyper(){
     const valgtMerke = $("#valgtMerke").val();
     $.get( "/hentBiler", function( biler ) {
         formaterTyper(biler,valgtMerke);
-    });
+    })
+        .fail(function(jqXHR) {
+            const json = $.parseJSON(jqXHR.responseText);
+            $("#feil").html(json.message);
+        });
 }
 function formaterTyper(biler,valgtMerke){
     let ut = "<select id='valgtType'>";
@@ -53,7 +60,11 @@ function henteEnMotorvogn(){
         $("#kjennetegn").val(enMotorVogn.kjennetegn);
         $("#merke").val(enMotorVogn.merke);
         $("#type").val(enMotorVogn.type);
-    });
+    })
+        .fail(function(jqXHR) {
+            const json = $.parseJSON(jqXHR.responseText);
+            $("#feil").html(json.message);
+        });
 }
 
 function endreMotorvogn() {
@@ -67,7 +78,12 @@ function endreMotorvogn() {
         type : $("#valgtType").val(),
     };
     $.post("/endre", motorvogn, function(){
-    });
+        hentAlle();
+    })
+        .fail(function(jqXHR) {
+            const json = $.parseJSON(jqXHR.responseText);
+            $("#feil").html(json.message);
+        });
 
     window.location.href="index.html";
 }

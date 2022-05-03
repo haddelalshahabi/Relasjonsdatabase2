@@ -1,61 +1,51 @@
-$(function(){  // kjøres når dokumentet er ferdig lastet
-    hentAlleBiler();
-});
+<!DOCTYPE html>
+<html lang="no">
+    <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+        <title>Motorvognregister</title>
+    </head>
+    <body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h1>Motorvognregister</h1>
+                <form class="form">
+                    <div class="form-group">
+                        <label for="personnr">Personnr</label>
+                        <input type="text" class="form-control" id="personnr"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="navn">Navn</label>
+                        <input type="text" class="form-control" id="navn"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="adresse">Adresse</label>
+                        <input type="text" class="form-control" id="adresse"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="kjennetegn">Kjennetegn</label>
+                        <input type="text" class="form-control" id="kjennetegn"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="merke">Merke</label>
+                        <div id="merke" class="dropdown">
 
-function hentAlleBiler() {
-    $.get( "/hentBiler", function( biler ) {
-        formaterBiler(biler);
-    });
-}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Type</label>
+                        <div id="type" class="dropdown">
 
-function formaterBiler(biler){
-    let ut = "<select id='valgtMerke' onchange='finnTyper()'>";
-    let i = 0;
-    let forrigeMerke = "";
-    ut+="<option>Velg merke</option>";
-    for (const bil of biler){
-        if(bil.merke != forrigeMerke){
-            ut+="<option>"+bil.merke+"</option>";
-        }
-        forrigeMerke = bil.merke;
-    }
-    ut+="</select>";
-    $("#merke").html(ut);
-}
-
-function finnTyper(){
-    const valgtMerke = $("#valgtMerke").val();
-    $.get( "/hentBiler", function( biler ) {
-        formaterTyper(biler,valgtMerke);
-    });
-}
-function formaterTyper(biler,valgtMerke){
-    let ut = "<select id='valgtType'>";
-    for(const bil of biler ){
-        if(bil.merke === valgtMerke){
-            ut+="<option>"+bil.type+"</option>";
-        }
-    }
-    ut+="</select>";
-    $("#type").html(ut);
-}
-
-function regMotorvogn() {
-    const motorvogn = {
-        personnr : $("#personnr").val(),
-        navn : $("#navn").val(),
-        adresse : $("#adresse").val(),
-        kjennetegn : $("#kjennetegn").val(),
-        merke : $("#valgtMerke").val(),
-        type : $("#valgtType").val(),
-    };
-    $.post("/lagre", motorvogn, function(){
-        hentAlle();
-    });
-    $("#personnr").val("");
-    $("#navn").val("");
-    $("#adresse").val("");
-    $("#kjennetegn").val("");
-    $("#valgtMerke").val("");
-    $("#valgtType").val("");
-}
+                        </div>
+                    </div>
+                </form>
+                <button class="btn btn-primary" onclick="regMotorvogn()">Registrer</button><br/>
+            </div>
+        </div>
+    </div>
+    <div id="feil"></div>
+    <script src="registrere.js"></script>
+    </body>
+</html>

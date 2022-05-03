@@ -3,7 +3,6 @@
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-  <script src="index.js"></script>
   <meta charset="UTF-8">
   <title>Motorvognregister</title>
 </head>
@@ -13,10 +12,14 @@
     <div class="col-md-8">
       <h3>Alle bilene:</h3>
       <div id="bilene" class="table-responsive"></div>
-      <a href="registrere.html" class="btn btn-primary"/> <!-- her kolber vi den andre filen vi har lagret -->
+      <a href="registrere.html" class="btn btn-primary">Registrere</a>
       <button class="btn btn-danger" onclick="slettAlle()">Slett alle biler</button>
     </div>
   </div>
 </div>
+<br/> <br/>
+<span>Har innført en ID på Motorvognregisterert som er primærnøkkel isteden for personnr!</span>
+<div id="feil"></div>
+<script src="index.js"></script>
 </body>
 </html>

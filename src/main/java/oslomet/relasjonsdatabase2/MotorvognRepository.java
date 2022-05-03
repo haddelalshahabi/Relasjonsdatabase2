@@ -17,40 +17,84 @@ public class MotorvognRepository {
 
     private Logger logger = LoggerFactory.getLogger(MotorvognRepository.class);
 
-    public void lagreMotorvogn(Motorvogn m) {
+    public boolean lagreMotorvogn(Motorvogn m) {
         String sql = "INSERT INTO Motorvogn (personnr,navn,adresse,kjennetegn,merke,type) VALUES(?,?,?,?,?,?)";
-        db.update(sql,m.getPersonnr(),m.getNavn(),m.getAdresse(),m.getKjennetegn(),m.getMerke(),m.getType());
+        try{
+            db.update(sql,m.getPersonnr(),m.getNavn(),m.getAdresse(),m.getKjennetegn(),m.getMerke(),m.getType());
+            return true;
+        }
+        catch(Exception e){
+            logger.error("Feil i lagre motorvogn "+e);
+            return false;
+        }
     }
 
     public List<Motorvogn> hentAlleMotorvogner() {
         String sql = "SELECT * FROM Motorvogn";
-        return db.query(sql,new BeanPropertyRowMapper(Motorvogn.class));
+        try{
+            return db.query(sql,new BeanPropertyRowMapper(Motorvogn.class));
+        }
+        catch(Exception e){
+            logger.error("Feil i hent alle motorvogner "+e);
+            return null;
+        }
     }
-
 
     public Motorvogn henteEnMotorvogn(int id){
         String sql = "SELECT * FROM Motorvogn WHERE id=?";
-        List<Motorvogn> enMotorvogn  = db.query(sql,new BeanPropertyRowMapper(Motorvogn.class),id);
-        return enMotorvogn.get(0);
+        try{
+            List<Motorvogn> enMotorvogn  = db.query(sql,new BeanPropertyRowMapper(Motorvogn.class),id);
+            return enMotorvogn.get(0);
+        }
+        catch(Exception e){
+            logger.error("Feil i hent en motorvogn "+e);
+            return null;
+        }
     }
 
-    public void endreMotorvogn(Motorvogn m){
+    public boolean endreMotorvogn(Motorvogn m){
         String sql = "UPDATE Motorvogn SET personnr=?, navn=?,adresse=?,kjennetegn=?,merke=?,type=? where id=?";
-        db.update(sql,m.getPersonnr(),m.getNavn(),m.getAdresse(),m.getKjennetegn(),m.getMerke(),m.getType(),m.getId());
+        try{
+            db.update(sql,m.getPersonnr(),m.getNavn(),m.getAdresse(),m.getKjennetegn(),m.getMerke(),m.getType(),m.getId());
+            return true;
+        }
+        catch(Exception e){
+            logger.error("Feil i endre en motorvogn "+e);
+            return false;
+        }
     }
 
-    public void slettEnMotorvogn(long personnr) {
+    public boolean slettEnMotorvogn(long personnr) {
         String sql = "DELETE FROM Motorvogn WHERE personnr=?";
-        db.update(sql,personnr);
+        try{
+            db.update(sql,personnr);
+            return true;
+        }
+        catch(Exception e){
+            logger.error("Feil i slett en motorvogn"+e);
+            return false;
+        }
     }
 
-    public void slettAlleMotorvogner () {
+    public boolean slettAlleMotorvogner () {
         String sql = "DELETE FROM Motorvogn";
-        db.update(sql);
+        try{
+            db.update(sql);
+            return true;
+        }
+        catch(Exception e){
+            logger.error("Feil i slett alle motorvogner"+e);
+            return false;
+        }
     }
 
     public List<Bil> hentAlleBiler(){
         String sql = "SELECT * FROM Bil";
-        return db.query(sql,new BeanPropertyRowMapper(Bil.class));
+        try{
+            return db.query(sql,new BeanPropertyRowMapper(Bil.class));
+        }
+        catch(Exception e){
+            return null;
+        }
     }
 }
